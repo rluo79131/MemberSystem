@@ -17,6 +17,15 @@
 - 採用 CookieAuthentication 作為授權驗證方案。
 - 採用 Entity Framework Core 作為ORM方案。
 
+# Entity Framework 指令
+- Entity Framework 6
+1. enable-migrations
+2. add-migration Init
+3. pdate-database –Verbose
+- Entity Framework Core
+1. add-migration [migration]-Context [DbContext]
+2. update-database -Context [DbContext]
+
 # 參考
 1. 授權驗證
 - https://mileslin.github.io/2017/07/ASP-NET-表單驗證
