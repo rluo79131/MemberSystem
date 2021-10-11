@@ -1,0 +1,78 @@
+﻿<form>
+    <div class="form-group col-md-4">
+        <label style="font-weight:bold;">帳號(電子信箱)<text style="color:red">*</text></label>
+        <input type="email" class="form-control" id="account" name="account">
+    </div>
+    <br />
+    <div class="form-group col-md-4">
+        <label style="font-weight:bold;">密碼<text style="color:red">*</text></label>
+        <input type="password" class="form-control" id="password" name="password">
+    </div>
+    <br />
+    <div class="form-group col-md-4">
+        <label for="password" style="font-weight:bold;">確認密碼<text style="color:red">*</text></label>
+        <input type="password" class="form-control" id="checkPassword" name="checkPassword">
+    </div>
+    <br />
+    <div class="form-group col-md-4">
+        <label style="font-weight:bold;">名稱<text style="color:red">*</text></label>
+        <input class="form-control" id="name" name="name">
+    </div>
+    <br />
+    <div class="form-group col-md-4">
+        <label style="font-weight:bold;">性別<text style="color:red">*</text></label><br />
+        <input type="radio" name="gender" value="M" checked>男
+        <input type="radio" name="gender" value="F">女
+    </div>
+    <br />
+    <div class="form-group col-md-6">
+        <a class="btn btn-danger" href="@Url.Action("Index", "Home")">取消</a>
+        <a class="btn btn-primary" onclick="register()">送出</a>
+    </div>
+</form>
+
+<script>
+    function register() {
+        var form = $("form").serialize();
+        var data = JSON.parse('{"' + decodeURIComponent(form).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+
+        if (validation(data)) {
+            swal({
+                text: "確認送出?",
+                buttons: true,
+                buttons: ["取消", "是"],
+            })
+            .then((response) => {
+                if (response) {
+                     sendRequest("Member", "Register", data, function () {
+                        location.href = "@Url.Action("Index", "Home")";
+                    });
+                }
+            });
+        }
+    }
+
+    function validation(data) {
+        if (data.account == "" || data.password == "" || data.checkPassword == "" || data.name == "") {
+            swal("未填寫資料");
+            return false;
+        }
+
+        if (!isEmail(data.account)) {
+            swal("帳號格式不正確");
+            return false;
+        }
+
+        if (data.password != data.checkPassword) {
+            swal("密碼和確認密碼不一致");
+            return false;
+        }
+
+        return true;
+    }
+
+    function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
+    }
+</script>

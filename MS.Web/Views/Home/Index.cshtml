@@ -1,0 +1,10 @@
+﻿<div class="jumbotron" style="margin-top:10%">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h1>嗨，@(((FormsIdentity)User.Identity).Ticket.UserData)</h1>
+    }
+    else
+    {
+        <h1>未登入狀態</h1>
+    }
+</div>
